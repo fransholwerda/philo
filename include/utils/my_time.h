@@ -1,30 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_isnum.c                                         :+:    :+:            */
+/*   my_time.h                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/29 17:26:00 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/02 14:38:19 by fholwerd      ########   odam.nl         */
+/*   Created: 2022/12/02 15:09:35 by fholwerd      #+#    #+#                 */
+/*   Updated: 2022/12/02 17:16:58 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_strlen.h"
-#include "ft_isdigit.h"
+#ifndef MY_TIME_H
+# define MY_TIME_H
 
-int	ft_isnum(char *str)
-{
-	unsigned int	i;
-	unsigned int	len;
+long int	get_start_time(void);
+long int	timestamp(long int start_time);
 
-	i = 0;
-	len = ft_strlen(str);
-	while (i < len)
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
+#endif

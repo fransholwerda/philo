@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.h                                             :+:    :+:            */
+/*   ft_atoi.h                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/29 17:49:36 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/11/29 17:52:35 by fholwerd      ########   odam.nl         */
+/*   Created: 2022/12/02 12:38:38 by fholwerd      #+#    #+#                 */
+/*   Updated: 2022/12/02 12:38:49 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#ifndef FT_ATOI_H
+# define FT_ATOI_H
 
-typedef struct s_philo
-{
-	int	philos;
-	int	die_time;
-	int	eat_time;
-	int	sleep_time;
-	int	eat_amount;
-}		t_philo;
+int	ft_atoi(const char *nptr);
 
 #endif

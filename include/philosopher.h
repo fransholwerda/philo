@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_isnum.c                                         :+:    :+:            */
+/*   philosopher.h                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/29 17:26:00 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/02 14:38:19 by fholwerd      ########   odam.nl         */
+/*   Created: 2022/11/29 17:49:36 by fholwerd      #+#    #+#                 */
+/*   Updated: 2022/12/02 16:27:03 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_strlen.h"
-#include "ft_isdigit.h"
+#ifndef PHILOSOPHER_H
+# define PHILOSOPHER_H
 
-int	ft_isnum(char *str)
+typedef struct s_philo
 {
-	unsigned int	i;
-	unsigned int	len;
+	int	last_time_eaten;
 
-	i = 0;
-	len = ft_strlen(str);
-	while (i < len)
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
+}		t_philo;
+
+typedef struct s_info
+{
+	int			philos;
+	int			die_time;
+	int			eat_time;
+	int			sleep_time;
+	int			eat_amount;
+	long int	start_time;
+}				t_info;
+
+int	philosophers(int argc, char *argv[]);
+
+#endif
