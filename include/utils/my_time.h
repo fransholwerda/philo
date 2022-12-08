@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/02 15:09:35 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/02 17:16:58 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/06 10:42:14 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,6 @@
 
 long int	get_start_time(void);
 long int	timestamp(long int start_time);
+int			proper_sleep(long int sleep_time);
 
 #endif

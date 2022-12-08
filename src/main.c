@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 15:01:23 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/02 16:58:09 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/06 10:59:39 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ int	numeric_args(int argc, char *argv[])
 		!ft_isnum(argv[3]) || !ft_isnum(argv[4]))
 	{
 		write(2, "Use numeric values only.\n", 25);
-		return (-1);
+		return (0);
 	}
 	if (argc == 6)
 	{
 		if (!ft_isnum(argv[5]))
 		{
 			write(2, "Use numeric values only.\n", 25);
-			return (-1);
+			return (0);
 		}
 	}
 	return (1);
