@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   philo_struct.c                                     :+:    :+:            */
+/*   philo_struct_utility.c                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/08 17:12:44 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/08 17:18:31 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/09 17:02:25 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "philosopher.h"
+#include "info_struct_utility.h"
+#include "philo_struct_utility.h"
 
 void	free_philo(t_philo *philo)
 {
@@ -21,13 +22,15 @@ void	free_philo(t_philo *philo)
 	{
 		temp = philo;
 		philo = philo->next;
+		if (temp->fork)
+			free(temp);
 		free(temp);
 		temp = NULL;
 	}
 	philo = NULL;
 }
 
-t_philo	*new_philo(int id, t_info *info)
+static t_philo	*new_philo(int id, t_info *info)
 {
 	t_philo	*philo;
 
@@ -39,11 +42,18 @@ t_philo	*new_philo(int id, t_info *info)
 	philo->last_time_slept = 0;
 	philo->death = 0;
 	philo->amount_eaten = 0;
+	philo->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (!philo->fork)
+	{
+		free(philo);
+		return (NULL);
+	}
 	philo->info = info;
 	philo->next = NULL;
+	return (philo);
 }
 
-t_philo	*philo_add_back(t_philo *start, t_philo *add)
+static t_philo	*philo_add_back(t_philo *start, t_philo *add)
 {
 	t_philo	*i;
 
@@ -59,14 +69,26 @@ t_philo	*philo_add_back(t_philo *start, t_philo *add)
 	return (start);
 }
 
-t_philo	*init_philos(int amount, t_info *info)
+static void	loop_philos(t_philo	*philos)
+{
+	t_philo	*last;
+
+	last = philos;
+	while (last->next)
+		last = last->next;
+	last->next = philos;
+}
+
+t_philo	*init_philos(t_info *info)
 {
 	int		i;
 	t_philo	*philos;
 
 	i = 0;
 	philos = NULL;
-	while (i < amount)
+	if (!info)
+		return (NULL);
+	while (i < info->philos)
 	{
 		if (!philos)
 		{
@@ -81,4 +103,6 @@ t_philo	*init_philos(int amount, t_info *info)
 		}
 		i++;
 	}
+	loop_philos(philos);
+	return (philos);
 }

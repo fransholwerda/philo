@@ -6,87 +6,130 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/02 12:34:58 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/08 17:21:40 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/09 17:55:18 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/time.h>
 #include <stdlib.h>
-#include "philosopher.h"
+#include "info_struct_utility.h"
+#include "philo_struct_utility.h"
+#include "freedom.h"
 #include "utils.h"
 #include "my_time.h"
 
 #include <unistd.h>
 #include <stdio.h>
 #include <pthread.h>
-t_info	*init_info(int argc, char *argv[])
+void	*philo_thread(void *arg)
 {
-	t_info			*info;
+	t_philo	*philo;
 
-	info = (t_info *)malloc(sizeof(t_info));
-	if (!info)
-		return (NULL);
-	info->philos = ft_atoi(argv[1]);
-	info->die_time = ft_atoi(argv[2]);
-	info->eat_time = ft_atoi(argv[3]);
-	info->sleep_time = ft_atoi(argv[4]);
-	info->print = malloc(sizeof(pthread_mutex_t));
-	if (!info->print)
+	philo = (t_philo *)arg;
+	if (philo->id % 2 == 1)
+		usleep(1000);
+	while (1)
 	{
-		free(info);
-		return (NULL);
+		pthread_mutex_lock(philo->fork);
+		pthread_mutex_lock(philo->info->print);
+		printf("%ld %d has taken a %d fork\n", timestamp(philo->info->start_time), philo->id, philo->id);
+		pthread_mutex_unlock(philo->info->print);
+
+		pthread_mutex_lock(philo->next->fork);
+		pthread_mutex_lock(philo->info->print);
+		printf("%ld %d has taken a %d fork\n", timestamp(philo->info->start_time), philo->id, philo->next->id);
+		pthread_mutex_unlock(philo->info->print);
+
+		pthread_mutex_lock(philo->info->print);
+		printf("%ld %d is eating\n", timestamp(philo->info->start_time), philo->id);
+		pthread_mutex_unlock(philo->info->print);
+
+		proper_sleep(philo->info->eat_time);
+
+		pthread_mutex_unlock(philo->fork);
+		pthread_mutex_lock(philo->info->print);
+		printf("%ld %d has dropped a %d fork\n", timestamp(philo->info->start_time), philo->id, philo->id);
+		pthread_mutex_unlock(philo->info->print);
+
+		pthread_mutex_unlock(philo->next->fork);
+		pthread_mutex_lock(philo->info->print);
+		printf("%ld %d has dropped a %d fork\n", timestamp(philo->info->start_time), philo->id, philo->next->id);
+		pthread_mutex_unlock(philo->info->print);
 	}
-	if (argc == 6)
-		info->eat_amount = ft_atoi(argv[5]);
-	else
-		info->eat_amount = -1;
-	return (info);
+
+	return (NULL);
 }
 
-void	*test_philo(void *arg)
+int	lock_forks(t_philo *philo)
 {
-	t_info	*info;
+	t_philo	*temp;
+	int		i;
 
-	info = (t_info *)arg;
-	pthread_mutex_lock(info->print);
-	printf("I am created!\n");
-	pthread_mutex_unlock(info->print);
-	pthread_mutex_lock(info->print);
-	printf("I am destroyed!\n");
-	pthread_mutex_unlock(info->print);
-	return (NULL);
+	temp = philo;
+	i = 0;
+	while (i < philo->info->philos)
+	{
+		if (pthread_mutex_init(temp->fork, NULL) != 0)
+			return (0);
+		temp = temp->next;
+		i++;
+	}
+	return (1);
+}
+
+int	engage_philos(t_philo *philo, t_info *info, pthread_t *threads)
+{
+	int			i;
+	int			error;
+
+	if (pthread_mutex_init(info->print, NULL) != 0)
+		return (0);
+	i = 0;
+	if (lock_forks(philo) == 0)
+		return (0);
+	while (i < info->philos)
+	{
+		error = pthread_create(&threads[i], NULL, &philo_thread, (void *)philo);
+		if (error != 0)
+			return (0);
+		usleep(10);
+		philo = philo->next;
+		i++;
+	}
+	while (1)
+		continue ;
+	return (1);
+}
+
+pthread_t	*create_threads(t_info *info)
+{
+	pthread_t	*threads;
+
+	if (!info)
+		return (NULL);
+	threads = (pthread_t *)malloc((info->philos + 1) * sizeof(pthread_t));
+	return (threads);
 }
 
 int	philosophers(int argc, char *argv[])
 {
 	t_info		*info;
+	t_philo		*philo;
 	pthread_t	*threads;
-	int			i;
-	int			error;
-
 
 	info = init_info(argc, argv);
-	if (!info)
-		return (0);
-	i = 0;
-	//engage philos
-	threads = (pthread_t *)malloc(info->philos * sizeof(pthread_t));
-	if (pthread_mutex_init(info->print, NULL) != 0)
+	philo = init_philos(info);
+	threads = create_threads(info);
+	if (!info || !philo || !threads)
 	{
-		printf("HELP!\n");
+		free_all(philo, info, threads);
 		return (0);
 	}
-	if (!threads)
-		return (0);
-	while (i < info->philos)
+	if (engage_philos(philo, info, threads) == 0)
 	{
-		error = pthread_create(&threads[i], NULL, &test_philo, (void *)info);
-		if (error != 0)
-			printf("Something went wrong\n");
-		usleep(1);
-		i++;
+		free_all(philo, info, threads);
+		return (0);
 	}
 	//arbiter(info);
-	//printf("philos: %d\ndie_time: %d\neat_time: %d\nsleep_time: %d\nstart_time: %ld", info->philos, info->die_time, info->eat_time, info->sleep_time, info->start_time);
 	return (1);
 }

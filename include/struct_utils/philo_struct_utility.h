@@ -1,18 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   philosopher.h                                      :+:    :+:            */
+/*   philo_struct_utility.h                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/29 17:49:36 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/09 13:03:33 by fholwerd      ########   odam.nl         */
+/*   Created: 2022/12/09 12:52:22 by fholwerd      #+#    #+#                 */
+/*   Updated: 2022/12/09 17:02:14 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHER_H
-# define PHILOSOPHER_H
+#ifndef PHILO_STRUCT_UTILITY_H
+# define PHILO_STRUCT_UTILITY_H
 
-int	philosophers(int argc, char *argv[]);
+# include "philosopher.h"
+
+typedef struct s_philo
+{
+	int				id;
+	int				last_time_eaten;
+	int				last_time_slept;
+	int				death;
+	int				amount_eaten;
+	pthread_mutex_t	*fork;
+	t_info			*info;
+	struct s_philo	*next;
+}		t_philo;
+
+void	free_philo(t_philo *philo);
+t_philo	*init_philos(t_info *info);
 
 #endif

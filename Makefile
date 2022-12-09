@@ -6,7 +6,7 @@
 #    By: fholwerd <fholwerd@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/11/29 15:00:02 by fholwerd      #+#    #+#                  #
-#    Updated: 2022/12/06 10:12:53 by fholwerd      ########   odam.nl          #
+#    Updated: 2022/12/09 13:35:17 by fholwerd      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,9 @@ NAME	= philo
 SRC		= $(ROOT)src/main.c \
 			$(ROOT)src/arbiter.c \
 			$(ROOT)src/philosopher.c \
+			$(ROOT)src/struct/philo_struct_utility.c \
+			$(ROOT)src/struct/info_struct_utility.c \
+			$(ROOT)src/utils/freedom.c \
 			$(ROOT)src/utils/ft_atoi.c \
 			$(ROOT)src/utils/ft_isdigit.c \
 			$(ROOT)src/utils/ft_isnum.c \
@@ -23,7 +26,8 @@ SRC		= $(ROOT)src/main.c \
 			$(ROOT)src/utils/stop.c
 OBJ		= $(SRC:.c=.o)
 INCLUDE	= -I$(ROOT)include \
-			-I$(ROOT)include/utils
+			-I$(ROOT)include/utils \
+			-I$(ROOT)include/struct_utils
 LINKS	= 
 CFLAGS	= -Wall -Werror -Wextra
 

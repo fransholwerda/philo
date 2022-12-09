@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 15:01:23 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/06 10:59:39 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/09 16:23:01 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 	// time_to_eat >= 0
 	// time_to_sleep >= 0
 	// number_of_times_each_philo_must_eat >= 0
+#include <stdio.h>
 int	numeric_args(int argc, char *argv[])
 {
 	if (!ft_isnum(argv[1]) || !ft_isnum(argv[2]) || \
@@ -39,8 +40,14 @@ int	numeric_args(int argc, char *argv[])
 	return (1);
 }
 
+void	check_for_leaks(void)
+{
+	system("leaks philo");
+}
+
 int	main(int argc, char *argv[])
 {
+	//atexit(check_for_leaks);
 	if (argc < 5 || argc > 6)
 	{
 		write(2, "Use 4 or 5 arguments.\n", 22);
@@ -50,5 +57,6 @@ int	main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	if (!philosophers(argc, argv))
 		return (EXIT_FAILURE);
+	printf("exiting\n");
 	return (EXIT_SUCCESS);
 }

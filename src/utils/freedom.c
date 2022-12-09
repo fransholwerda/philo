@@ -1,18 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   philosopher.h                                      :+:    :+:            */
+/*   freedom.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/29 17:49:36 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/09 13:03:33 by fholwerd      ########   odam.nl         */
+/*   Created: 2022/12/09 13:31:31 by fholwerd      #+#    #+#                 */
+/*   Updated: 2022/12/09 14:22:56 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHER_H
-# define PHILOSOPHER_H
+#include <pthread.h>
+#include <stdlib.h>
+#include "info_struct_utility.h"
+#include "philo_struct_utility.h"
 
-int	philosophers(int argc, char *argv[]);
-
-#endif
+void	free_all(t_philo *philo, t_info *info, pthread_t *threads)
+{
+	if (info)
+		free_info(info);
+	if (philo)
+		free_philo(philo);
+	if (threads)
+	{
+		free(threads);
+		threads = NULL;
+	}
+}
