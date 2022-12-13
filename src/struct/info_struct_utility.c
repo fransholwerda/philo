@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/09 13:02:41 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/09 17:02:55 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/13 15:49:50 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ t_info	*init_info(int argc, char *argv[])
 	info->die_time = ft_atoi(argv[2]);
 	info->eat_time = ft_atoi(argv[3]);
 	info->sleep_time = ft_atoi(argv[4]);
+	info->death = 0;
+	info->death_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	info->print = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	info->death = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	if (!info->print || !info->death)
 	{
 		free_info(info);

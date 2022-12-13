@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/02 12:34:58 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/09 17:55:18 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/13 15:52:29 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,7 @@ void	*philo_thread(void *arg)
 		usleep(1000);
 	while (1)
 	{
-		pthread_mutex_lock(philo->fork);
-		pthread_mutex_lock(philo->info->print);
-		printf("%ld %d has taken a %d fork\n", timestamp(philo->info->start_time), philo->id, philo->id);
-		pthread_mutex_unlock(philo->info->print);
-
-		pthread_mutex_lock(philo->next->fork);
-		pthread_mutex_lock(philo->info->print);
-		printf("%ld %d has taken a %d fork\n", timestamp(philo->info->start_time), philo->id, philo->next->id);
-		pthread_mutex_unlock(philo->info->print);
-
-		pthread_mutex_lock(philo->info->print);
-		printf("%ld %d is eating\n", timestamp(philo->info->start_time), philo->id);
-		pthread_mutex_unlock(philo->info->print);
-
-		proper_sleep(philo->info->eat_time);
-
-		pthread_mutex_unlock(philo->fork);
-		pthread_mutex_lock(philo->info->print);
-		printf("%ld %d has dropped a %d fork\n", timestamp(philo->info->start_time), philo->id, philo->id);
-		pthread_mutex_unlock(philo->info->print);
-
-		pthread_mutex_unlock(philo->next->fork);
-		pthread_mutex_lock(philo->info->print);
-		printf("%ld %d has dropped a %d fork\n", timestamp(philo->info->start_time), philo->id, philo->next->id);
-		pthread_mutex_unlock(philo->info->print);
+		
 	}
 
 	return (NULL);

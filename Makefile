@@ -6,7 +6,7 @@
 #    By: fholwerd <fholwerd@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/11/29 15:00:02 by fholwerd      #+#    #+#                  #
-#    Updated: 2022/12/09 13:35:17 by fholwerd      ########   odam.nl          #
+#    Updated: 2022/12/13 15:55:23 by fholwerd      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ ROOT	= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 NAME	= philo
 SRC		= $(ROOT)src/main.c \
 			$(ROOT)src/arbiter.c \
+			$(ROOT)src/eat.c \
 			$(ROOT)src/philosopher.c \
 			$(ROOT)src/struct/philo_struct_utility.c \
 			$(ROOT)src/struct/info_struct_utility.c \
@@ -23,6 +24,7 @@ SRC		= $(ROOT)src/main.c \
 			$(ROOT)src/utils/ft_isnum.c \
 			$(ROOT)src/utils/ft_strlen.c \
 			$(ROOT)src/utils/my_time.c \
+			$(ROOT)src/utils/philo_print.c \
 			$(ROOT)src/utils/stop.c
 OBJ		= $(SRC:.c=.o)
 INCLUDE	= -I$(ROOT)include \

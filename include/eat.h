@@ -1,34 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   info_struct_utility.h                              :+:    :+:            */
+/*   eat.h                                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/12/09 13:03:06 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/13 15:49:41 by fholwerd      ########   odam.nl         */
+/*   Created: 2022/12/13 15:53:58 by fholwerd      #+#    #+#                 */
+/*   Updated: 2022/12/13 15:54:39 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INFO_STRUCT_UTILITY_H
-# define INFO_STRUCT_UTILITY_H
+#ifndef EAT_H
+# define EAT_H
 
-# include <pthread.h>
+# include "philo_struct_utility.h"
 
-typedef struct s_info
-{
-	int				philos;
-	int				die_time;
-	int				eat_time;
-	int				sleep_time;
-	int				eat_amount;
-	long int		start_time;
-	int				death;
-	pthread_mutex_t	*death_lock;
-	pthread_mutex_t	*print;
-}				t_info;
-
-void	free_info(t_info *info);
-t_info	*init_info(int argc, char *argv[]);
+int	eat(t_philo *philo);
 
 #endif

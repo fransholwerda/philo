@@ -6,20 +6,21 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/09 12:52:22 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/09 17:02:14 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/13 15:41:18 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_STRUCT_UTILITY_H
 # define PHILO_STRUCT_UTILITY_H
 
-# include "philosopher.h"
+# include <pthread.h>
+# include "info_struct_utility.h"
 
 typedef struct s_philo
 {
 	int				id;
-	int				last_time_eaten;
-	int				last_time_slept;
+	long int		last_time_eaten;
+	long int		last_time_slept;
 	int				death;
 	int				amount_eaten;
 	pthread_mutex_t	*fork;
