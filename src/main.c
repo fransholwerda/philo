@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 15:01:23 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/09 16:23:01 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/16 18:36:11 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ int	main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	if (!philosophers(argc, argv))
 		return (EXIT_FAILURE);
-	printf("exiting\n");
 	return (EXIT_SUCCESS);
+	/* Number of meals, parsing, make sure no leaks*/
 }

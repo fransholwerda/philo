@@ -6,7 +6,7 @@
 #    By: fholwerd <fholwerd@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/11/29 15:00:02 by fholwerd      #+#    #+#                  #
-#    Updated: 2022/12/13 15:55:23 by fholwerd      ########   odam.nl          #
+#    Updated: 2022/12/16 18:29:40 by fholwerd      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRC		= $(ROOT)src/main.c \
 			$(ROOT)src/arbiter.c \
 			$(ROOT)src/eat.c \
 			$(ROOT)src/philosopher.c \
+			$(ROOT)src/threads.c \
 			$(ROOT)src/struct/philo_struct_utility.c \
 			$(ROOT)src/struct/info_struct_utility.c \
 			$(ROOT)src/utils/freedom.c \
@@ -31,7 +32,7 @@ INCLUDE	= -I$(ROOT)include \
 			-I$(ROOT)include/utils \
 			-I$(ROOT)include/struct_utils
 LINKS	= 
-CFLAGS	= -Wall -Werror -Wextra
+CFLAGS	= #-Wall -Werror -Wextra# -fsanitize=thread
 
 all: $(NAME)
 

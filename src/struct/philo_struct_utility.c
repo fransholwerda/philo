@@ -6,26 +6,32 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/08 17:12:44 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/09 17:02:25 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/16 18:35:29 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <pthread.h>
 #include "info_struct_utility.h"
 #include "philo_struct_utility.h"
+#include "philo_enum.h"
 
 void	free_philo(t_philo *philo)
 {
 	t_philo	*temp;
 
-	while (philo)
+	if (!philo)
+		return ;
+	while (philo != NULL)
 	{
-		temp = philo;
-		philo = philo->next;
-		if (temp->fork)
-			free(temp);
-		free(temp);
-		temp = NULL;
+		temp = philo->next;
+		if (philo->fork != NULL)
+		{
+			pthread_mutex_destroy(philo->fork);
+			free(philo->fork);
+		}
+		free(philo);
+		philo = temp;
 	}
 	philo = NULL;
 }
@@ -40,12 +46,11 @@ static t_philo	*new_philo(int id, t_info *info)
 	philo->id = id;
 	philo->last_time_eaten = 0;
 	philo->last_time_slept = 0;
-	philo->death = 0;
 	philo->amount_eaten = 0;
 	philo->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	if (!philo->fork)
 	{
-		free(philo);
+		free_philo(philo);
 		return (NULL);
 	}
 	philo->info = info;
@@ -69,14 +74,24 @@ static t_philo	*philo_add_back(t_philo *start, t_philo *add)
 	return (start);
 }
 
-static void	loop_philos(t_philo	*philos)
+void	loop_philos(t_philo	*philos, int loop)
 {
 	t_philo	*last;
 
-	last = philos;
-	while (last->next)
-		last = last->next;
-	last->next = philos;
+	if (loop == 1)
+	{
+		last = philos;
+		while (last->next)
+			last = last->next;
+		last->next = philos;
+	}
+	else
+	{
+		last = philos;
+		while (last->id < last->next->id)
+			last = last->next;
+		last->next = NULL;
+	}
 }
 
 t_philo	*init_philos(t_info *info)
@@ -86,7 +101,7 @@ t_philo	*init_philos(t_info *info)
 
 	i = 0;
 	philos = NULL;
-	if (!info)
+	if (!info || info->philos == 0)
 		return (NULL);
 	while (i < info->philos)
 	{
@@ -103,6 +118,7 @@ t_philo	*init_philos(t_info *info)
 		}
 		i++;
 	}
-	loop_philos(philos);
+	loop_philos(philos, 1);
 	return (philos);
 }
+

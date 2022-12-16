@@ -1,31 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   freedom.c                                          :+:    :+:            */
+/*   threads.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/12/09 13:31:31 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/16 17:15:50 by fholwerd      ########   odam.nl         */
+/*   Created: 2022/12/15 16:02:21 by fholwerd      #+#    #+#                 */
+/*   Updated: 2022/12/16 17:38:15 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pthread.h>
 #include <stdlib.h>
 #include "info_struct_utility.h"
-#include "philo_struct_utility.h"
 
 
-#include <unistd.h>
-void	free_all(t_philo *philo, t_info *info, pthread_t *threads)
+
+#include <stdio.h>
+pthread_t	*create_threads(t_info *info)
 {
-	if (info)
-		free_info(info);
-	if (philo)
-		free_philo(philo);
-	if (threads)
+	pthread_t	*threads;
+
+	if (!info)
+		return (NULL);
+	threads = (pthread_t *)malloc((info->philos) * sizeof(pthread_t));
+	return (threads);
+}
+
+void	join_threads(pthread_t *threads, int amount)
+{
+	int	i;
+
+	i = 0;
+	while (i < amount)
 	{
-		free(threads);
-		threads = NULL;
+		pthread_join(threads[i], NULL);
+		i++;
 	}
 }

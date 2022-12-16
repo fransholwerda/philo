@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/09 13:02:41 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/13 15:49:50 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/15 12:39:18 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "info_struct_utility.h"
 #include "my_time.h"
 #include "utils.h"
+#include "philo_enum.h"
 
 void	free_info(t_info *info)
 {
@@ -21,8 +22,8 @@ void	free_info(t_info *info)
 		return ;
 	if (info->print)
 		free(info->print);
-	if (info->death)
-		free(info->death);
+	if (info->death_lock)
+		free(info->death_lock);
 	free(info);
 	info = NULL;
 }
@@ -38,10 +39,10 @@ t_info	*init_info(int argc, char *argv[])
 	info->die_time = ft_atoi(argv[2]);
 	info->eat_time = ft_atoi(argv[3]);
 	info->sleep_time = ft_atoi(argv[4]);
-	info->death = 0;
+	info->death = ALIVE;
 	info->death_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	info->print = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	if (!info->print || !info->death)
+	if (!info->print || !info->death_lock)
 	{
 		free_info(info);
 		return (NULL);

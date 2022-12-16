@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 13:51:26 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/13 13:52:06 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/16 17:35:27 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "philo_struct_utility.h"
 
+int		alive_check(t_info *info);
 void	philo_print(t_philo *philo, char *msg);
 
 #endif

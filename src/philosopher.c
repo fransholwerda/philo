@@ -6,37 +6,46 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/02 12:34:58 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/13 15:52:29 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/16 17:36:26 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/time.h>
 #include <stdlib.h>
+#include <pthread.h>
+#include <stdio.h>
+#include <unistd.h>
 #include "info_struct_utility.h"
 #include "philo_struct_utility.h"
+#include "arbiter.h"
 #include "freedom.h"
 #include "utils.h"
 #include "my_time.h"
+#include "eat.h"
+#include "philo_print.h"
+#include "threads.h"
+#include "philo_enum.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include <pthread.h>
 void	*philo_thread(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->id % 2 == 1)
+	if (philo->id % 2 == 0)
 		usleep(1000);
 	while (1)
 	{
-		
+		if (alive_check(philo->info) == DEATH)
+			return (NULL);
+		eat(philo);
+		philo_print(philo, "is sleeping\n");
+		proper_sleep(philo->info->sleep_time);
+		philo_print(philo, "is thinking\n");
 	}
-
 	return (NULL);
 }
 
-int	lock_forks(t_philo *philo)
+int	init_mutex(t_philo *philo)
 {
 	t_philo	*temp;
 	int		i;
@@ -61,30 +70,17 @@ int	engage_philos(t_philo *philo, t_info *info, pthread_t *threads)
 	if (pthread_mutex_init(info->print, NULL) != 0)
 		return (0);
 	i = 0;
-	if (lock_forks(philo) == 0)
+	if (init_mutex(philo) == 0)
 		return (0);
 	while (i < info->philos)
 	{
 		error = pthread_create(&threads[i], NULL, &philo_thread, (void *)philo);
 		if (error != 0)
 			return (0);
-		usleep(10);
 		philo = philo->next;
 		i++;
 	}
-	while (1)
-		continue ;
 	return (1);
-}
-
-pthread_t	*create_threads(t_info *info)
-{
-	pthread_t	*threads;
-
-	if (!info)
-		return (NULL);
-	threads = (pthread_t *)malloc((info->philos + 1) * sizeof(pthread_t));
-	return (threads);
 }
 
 int	philosophers(int argc, char *argv[])
@@ -106,6 +102,9 @@ int	philosophers(int argc, char *argv[])
 		free_all(philo, info, threads);
 		return (0);
 	}
-	//arbiter(info);
+	arbiter(philo, info); //USE THE RETURN VALUE
+	join_threads(threads, info->philos);
+	loop_philos(philo, 0);
+	free_all(philo, info, threads);
 	return (1);
 }
