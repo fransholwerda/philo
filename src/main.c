@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 15:01:23 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/20 14:18:12 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/20 15:11:19 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ int	numeric_args(int argc, char *argv[])
 	return (1);
 }
 
-void	check_for_leaks(void)
+/* void	check_for_leaks(void)
 {
 	system("leaks philo");
-}
+	atexit(check_for_leaks);
+} */
 
 int	main(int argc, char *argv[])
 {
-	atexit(check_for_leaks);
 	if (argc < 5 || argc > 6)
 	{
 		printf("Use 4 or 5 arguments.\n");
