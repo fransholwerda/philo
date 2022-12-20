@@ -6,17 +6,19 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/30 10:46:51 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/09/03 15:11:29 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/20 14:03:37 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <limits.h>
+
 static int	of_check(long int value, int minus, const char c)
 {
-	if (((value * 10 * minus) > 922337203685477580 && c > 55)
-		|| (value * 10 * minus) >= 9223372036854775800)
+	if (((value * 10 * minus) > INT_MAX && c > 55)
+		|| (value * 10 * minus) >= INT_MAX)
 		return (-1);
-	else if (((value * 10 * minus) < -922337203685477580 && c > 56)
-		|| (value * 10 * minus) <= -9223372036854775800)
+	else if (((value * 10 * minus) < INT_MIN && c > 56)
+		|| (value * 10 * minus) <= INT_MIN)
 		return (0);
 	else
 		return (1);
@@ -43,7 +45,7 @@ int	ft_atoi(const char *nptr)
 	while (nptr[i] >= 48 && nptr[i] <= 57)
 	{
 		if (of_check(value, minus, nptr[i]) < 1)
-			return (of_check(value, minus, nptr[i]));
+			return (-2);
 		value = (value * 10) + (nptr[i] - 48);
 		i++;
 	}

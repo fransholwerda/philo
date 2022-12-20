@@ -6,11 +6,12 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/09 13:02:41 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/15 12:39:18 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/20 14:13:47 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "info_struct_utility.h"
 #include "my_time.h"
 #include "utils.h"
@@ -28,6 +29,30 @@ void	free_info(t_info *info)
 	info = NULL;
 }
 
+static int	assign_input(t_info *info, int argc, char *argv[])
+{
+	info->philos = ft_atoi(argv[1]);
+	info->die_time = ft_atoi(argv[2]);
+	info->eat_time = ft_atoi(argv[3]);
+	info->sleep_time = ft_atoi(argv[4]);
+	if (argc == 6)
+		info->eat_amount = ft_atoi(argv[5]);
+	else
+		info->eat_amount = -1;
+	if (info->philos == -2 || info->die_time == -2 || info->eat_time == -2
+		|| info->sleep_time == -2 || info->eat_amount == -2)
+	{
+		printf("Invalid input.\n");
+		return (FAIL);
+	}
+	if (info->philos > 200)
+	{
+		printf("No more than 200 philosophers.\n");
+		return (FAIL);
+	}
+	return (SUCCESS);
+}
+
 t_info	*init_info(int argc, char *argv[])
 {
 	t_info	*info;
@@ -35,22 +60,16 @@ t_info	*init_info(int argc, char *argv[])
 	info = (t_info *)malloc(sizeof(t_info));
 	if (!info)
 		return (NULL);
-	info->philos = ft_atoi(argv[1]);
-	info->die_time = ft_atoi(argv[2]);
-	info->eat_time = ft_atoi(argv[3]);
-	info->sleep_time = ft_atoi(argv[4]);
+	info->done_eating = 0;
 	info->death = ALIVE;
 	info->death_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	info->print = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	if (!info->print || !info->death_lock)
+	if (!info->print || !info->death_lock
+		|| assign_input(info, argc, argv) == FAIL)
 	{
 		free_info(info);
 		return (NULL);
 	}
-	if (argc == 6)
-		info->eat_amount = ft_atoi(argv[5]);
-	else
-		info->eat_amount = -1;
 	info->start_time = get_start_time();
 	return (info);
 }

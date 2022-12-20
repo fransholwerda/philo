@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/02 14:51:58 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/16 18:09:15 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/20 15:04:39 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ int	proper_sleep(long int sleep_time, t_philo *philo)
 	start = get_start_time();
 	current = timestamp(start);
 	if (start == -1 || current == -1)
-		return (0);
+		return (FAIL);
 	while (current <= sleep_time)
 	{
-		usleep(500);
+		usleep(200);
 		current = timestamp(start);
 		if (current == -1)
-			return (0);
+			return (FAIL);
 	}
-	return (1);
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/08 17:12:44 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/16 18:35:29 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/20 14:16:03 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static t_philo	*new_philo(int id, t_info *info)
 		return (NULL);
 	philo->id = id;
 	philo->last_time_eaten = 0;
-	philo->last_time_slept = 0;
 	philo->amount_eaten = 0;
 	philo->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	if (!philo->fork)
@@ -121,4 +120,3 @@ t_philo	*init_philos(t_info *info)
 	loop_philos(philos, 1);
 	return (philos);
 }
-

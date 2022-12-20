@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/02 12:34:58 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/16 17:36:26 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/20 15:00:08 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,37 @@
 #include "threads.h"
 #include "philo_enum.h"
 
+static void	set_death(t_info *info)
+{
+	pthread_mutex_lock(info->death_lock);
+	info->death = DEATH;
+	pthread_mutex_unlock(info->death_lock);
+}
+
 void	*philo_thread(void *arg)
 {
 	t_philo	*philo;
+	int		eat_status;
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
 		usleep(1000);
 	while (1)
 	{
+		if (philo->info->philos == 1)
+			return (NULL);
 		if (alive_check(philo->info) == DEATH)
 			return (NULL);
-		eat(philo);
+		eat_status = eat(philo);
+		if (eat_status == DONE_EATING || eat_status == FAIL)
+			return (NULL);
 		philo_print(philo, "is sleeping\n");
-		proper_sleep(philo->info->sleep_time);
+		if (proper_sleep(philo->info->sleep_time) == FAIL)
+		{
+			philo_print(philo, "sleep went wrong\n");
+			set_death(philo->info);
+			return (NULL);
+		}
 		philo_print(philo, "is thinking\n");
 	}
 	return (NULL);
@@ -52,6 +69,8 @@ int	init_mutex(t_philo *philo)
 
 	temp = philo;
 	i = 0;
+	if (pthread_mutex_init(philo->info->death_lock, NULL) != 0)
+		return (0);
 	while (i < philo->info->philos)
 	{
 		if (pthread_mutex_init(temp->fork, NULL) != 0)
@@ -102,7 +121,7 @@ int	philosophers(int argc, char *argv[])
 		free_all(philo, info, threads);
 		return (0);
 	}
-	arbiter(philo, info); //USE THE RETURN VALUE
+	arbiter(philo, info);
 	join_threads(threads, info->philos);
 	loop_philos(philo, 0);
 	free_all(philo, info, threads);

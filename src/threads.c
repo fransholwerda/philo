@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/15 16:02:21 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/16 17:38:15 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/20 14:16:56 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 #include <stdlib.h>
 #include "info_struct_utility.h"
 
-
-
-#include <stdio.h>
 pthread_t	*create_threads(t_info *info)
 {
 	pthread_t	*threads;
