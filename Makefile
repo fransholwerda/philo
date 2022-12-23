@@ -6,7 +6,7 @@
 #    By: fholwerd <fholwerd@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/11/29 15:00:02 by fholwerd      #+#    #+#                  #
-#    Updated: 2022/12/20 15:27:02 by fholwerd      ########   odam.nl          #
+#    Updated: 2022/12/23 15:29:10 by fholwerd      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME	= philo
 SRC		= $(ROOT)src/main.c \
 			$(ROOT)src/arbiter.c \
 			$(ROOT)src/eat.c \
+			$(ROOT)src/philo_thread.c \
 			$(ROOT)src/philosopher.c \
 			$(ROOT)src/threads.c \
 			$(ROOT)src/struct/philo_struct_utility.c \

@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/09 13:02:41 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/20 14:13:47 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/23 15:19:29 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ static int	assign_input(t_info *info, int argc, char *argv[])
 		printf("Invalid input.\n");
 		return (FAIL);
 	}
-	if (info->philos > 200)
+	if (info->philos < 1)
 	{
-		printf("No more than 200 philosophers.\n");
+		printf("Use at least 1 philosopher.\n");
 		return (FAIL);
 	}
 	return (SUCCESS);

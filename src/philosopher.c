@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/02 12:34:58 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/20 15:00:08 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/23 15:34:14 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,48 +19,8 @@
 #include "philo_struct_utility.h"
 #include "arbiter.h"
 #include "freedom.h"
-#include "utils.h"
-#include "my_time.h"
-#include "eat.h"
-#include "philo_print.h"
 #include "threads.h"
-#include "philo_enum.h"
-
-static void	set_death(t_info *info)
-{
-	pthread_mutex_lock(info->death_lock);
-	info->death = DEATH;
-	pthread_mutex_unlock(info->death_lock);
-}
-
-void	*philo_thread(void *arg)
-{
-	t_philo	*philo;
-	int		eat_status;
-
-	philo = (t_philo *)arg;
-	if (philo->id % 2 == 0)
-		usleep(1000);
-	while (1)
-	{
-		if (philo->info->philos == 1)
-			return (NULL);
-		if (alive_check(philo->info) == DEATH)
-			return (NULL);
-		eat_status = eat(philo);
-		if (eat_status == DONE_EATING || eat_status == FAIL)
-			return (NULL);
-		philo_print(philo, "is sleeping\n");
-		if (proper_sleep(philo->info->sleep_time) == FAIL)
-		{
-			philo_print(philo, "sleep went wrong\n");
-			set_death(philo->info);
-			return (NULL);
-		}
-		philo_print(philo, "is thinking\n");
-	}
-	return (NULL);
-}
+#include "philo_thread.h"
 
 int	init_mutex(t_philo *philo)
 {
@@ -95,7 +55,12 @@ int	engage_philos(t_philo *philo, t_info *info, pthread_t *threads)
 	{
 		error = pthread_create(&threads[i], NULL, &philo_thread, (void *)philo);
 		if (error != 0)
+		{
+			set_death(info);
+			printf("Thread %d failed to create.\n", i);
+			join_threads(threads, i - 1);
 			return (0);
+		}
 		philo = philo->next;
 		i++;
 	}
@@ -118,6 +83,7 @@ int	philosophers(int argc, char *argv[])
 	}
 	if (engage_philos(philo, info, threads) == 0)
 	{
+		loop_philos(philo, 0);
 		free_all(philo, info, threads);
 		return (0);
 	}

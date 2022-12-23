@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/02 13:47:53 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/20 14:58:11 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/23 15:16:01 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ int	philo_alive_check(t_philo *philo, t_info *info)
 
 	pthread_mutex_lock(info->death_lock);
 	if (info->death == DEATH)
-	{
-		printf("test\n");
 		return (DEATH);
-	}
 	check = philo->last_time_eaten + info->die_time;
 	if (philo->amount_eaten == info->eat_amount)
 	{

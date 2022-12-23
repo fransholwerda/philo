@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 15:01:23 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/20 15:18:53 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/23 15:24:04 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	numeric_args(int argc, char *argv[])
 	if (!ft_isnum(argv[1]) || !ft_isnum(argv[2]) || \
 		!ft_isnum(argv[3]) || !ft_isnum(argv[4]))
 	{
-		printf("Use numeric values only.\n");
+		printf("Use positive integer values only.\n");
 		return (0);
 	}
 	if (argc == 6)
@@ -35,14 +35,14 @@ int	numeric_args(int argc, char *argv[])
 	return (1);
 }
 
-// void	check_for_leaks(void)
-// {
-// 	atexit(check_for_leaks);
-// 	system("leaks philo");
-// } 
+void	check_for_leaks(void)
+{
+	system("leaks philo");
+} 
 
 int	main(int argc, char *argv[])
 {
+	atexit(check_for_leaks);
 	if (argc < 5 || argc > 6)
 	{
 		printf("Use 4 or 5 arguments.\n");
