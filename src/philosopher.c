@@ -6,7 +6,7 @@
 /*   By: fholwerd <fholwerd@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/02 12:34:58 by fholwerd      #+#    #+#                 */
-/*   Updated: 2022/12/23 15:34:14 by fholwerd      ########   odam.nl         */
+/*   Updated: 2022/12/28 14:03:50 by fholwerd      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	engage_philos(t_philo *philo, t_info *info, pthread_t *threads)
 		if (error != 0)
 		{
 			set_death(info);
-			printf("Thread %d failed to create.\n", i);
+			printf("Thread %d failed to create.\n", i + 1);
 			join_threads(threads, i - 1);
 			return (0);
 		}
